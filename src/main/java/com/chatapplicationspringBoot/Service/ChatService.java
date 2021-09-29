@@ -1,7 +1,6 @@
 package com.chatapplicationspringBoot.Service;
 
 import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +10,17 @@ import java.util.List;
 
 @Service
 public class ChatService {
+
+    //Not Constructor but Autowired
     @Autowired
     private ChatRepository chatRepository;
+
+    //Get all chat from Database
     public List<Chat> Listallchat(){
         return chatRepository.findAll();
     }
 
+    //Save chat into database by getting values from controller
     public void saveChat(Chat chat) {
         Date date = new Date();
         chat.setAnswerDate(date.toString());
@@ -24,17 +28,20 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
+    //Update chat into database by getting values from controller
     public void updateChat(Chat chat){
         Date date = new Date();
-        chat.setAnswerDate(date.toString());
-        chat.setQuestionDate(date.toString());
+        chat.setUpdatedQuestionDate(date.toString());
+        chat.setUpdatedAnswerDate(date.toString());
         chatRepository.save(chat);
     }
 
+    //Find by ID chat from database
     public Chat getChat(Long id) {
         return chatRepository.findById(id).get();
     }
 
+    //Delete chat from db
     public void deleteChat(Long id) {
         chatRepository.deleteById(id);
     }

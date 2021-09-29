@@ -2,7 +2,6 @@ package com.chatapplicationspringBoot.Controller;
 
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
-import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,52 +20,81 @@ public class ChatController {
     private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     public boolean authorization(String key1) {
-        if (key.equals(key1)) return true;
-        else return false;
+        return key.equals(key1);
     }
 
+//    public ResponseEntity Authorized(String key1){
+//        if (key.equals(key1)){
+//            return new ResponseEntity(HttpStatus.OK);
+//        }else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+//    }
+
+    //This API shows all the chats
     @GetMapping("")
-    public List<Chat> list() {
-        return chatService.Listallchat();
+    public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
+        if (authorization(key1) == true) {
+            List<Chat> chatList = chatService.Listallchat();
+            return new ResponseEntity(chatList, HttpStatus.OK);
+        }
+        else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
+    //This API only show certain object by taking on ID number
     @GetMapping("/{id}")
-    public ResponseEntity<Chat> get(@RequestHeader("Authorization") String key1,@PathVariable Long id) {
+    public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1) == true) {
             try {
                 Chat chat = chatService.getChat(id);
-                return new ResponseEntity<Chat>(chat, HttpStatus.OK);
+                return new ResponseEntity(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
-                return new ResponseEntity<Chat>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity("Not Exist",HttpStatus.NOT_FOUND);
             }
-        }else return new ResponseEntity<Chat>(HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
+    //This API takes question with ID in header
     @GetMapping("/question")
-    public ResponseEntity<Chat> getquestion(@RequestParam ("question") Long id){
-        try {
-            Chat chat = chatService.getChat(id);
-            return new ResponseEntity<Chat>(chat, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<Chat>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Object> getquestion(@RequestHeader("Authorization") String key1, @RequestParam("question") Long id) {
+        if (authorization(key1) == true) {
+            try {
+                Chat chat = chatService.getChat(id);
+                return new ResponseEntity(chat, HttpStatus.OK);
+            } catch (NoSuchElementException e) {
+                return new ResponseEntity("Not Exist",HttpStatus.NOT_FOUND);
+            }
+        } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
+    //This API just add the chat
     @PostMapping("/add")
-    public void add(@RequestBody Chat chat) {
-        chatService.saveChat(chat);
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody Chat chat) {
-        try{
+    public ResponseEntity add(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
+        if (authorization(key1) == true) {
             chatService.saveChat(chat);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity(HttpStatus.OK);
+        }else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+    }
+
+    //This API updates the chat by just giving certain ID all values should be update otherwise other fields will be NULL
+    @PutMapping("/update")
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
+        if (authorization(key1) == true) {
+            try {
+                chatService.updateChat(chat);
+                return new ResponseEntity("The Update has been made",HttpStatus.OK);
+            } catch (NoSuchElementException e) {
+                return new ResponseEntity("Not Exist",HttpStatus.NOT_FOUND);
+            }
+        } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
 
     }
 
-
+    //This API delete certain chat
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
+        if (authorization(key1) == true) {
+            chatService.deleteChat(id);
+            return new ResponseEntity("The given ID has been deleted",HttpStatus.OK);
+        }
+        else return new ResponseEntity("Not Authorized",HttpStatus.OK);
+    }
 }

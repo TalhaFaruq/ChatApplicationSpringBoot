@@ -1,21 +1,26 @@
 package com.chatapplicationspringBoot.Model;
 
 import javax.persistence.*;
-import java.util.Date;
+
 @Entity
 public class Chat {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private long id; //Chat ID having a question and answer
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String question; //Chat question
     @Column(nullable = false)
     private String answer; //Chat answer
     @Column(nullable = true)
-    private String questionDate;
+    private String questionDate; //Chat question Date
     @Column(nullable = true)
-    private String answerDate;
+    private String answerDate;  //Chat answer Date
+    @Column(nullable = true)
+    private String updatedQuestionDate;     //Chat question Updated Date
+    @Column(nullable = true)
+    private String updatedAnswerDate;  //Chat answer Updated Date
+
 
     public long getId() {
         return id;
@@ -55,5 +60,21 @@ public class Chat {
 
     public void setAnswerDate(String answerDate) {
         this.answerDate = answerDate;
+    }
+
+    public String getUpdatedQuestionDate() {
+        return updatedQuestionDate;
+    }
+
+    public void setUpdatedQuestionDate(String updatedQuestionDate) {
+        this.updatedQuestionDate = updatedQuestionDate;
+    }
+
+    public String getUpdatedAnswerDate() {
+        return updatedAnswerDate;
+    }
+
+    public void setUpdatedAnswerDate(String updatedAnswerDate) {
+        this.updatedAnswerDate = updatedAnswerDate;
     }
 }
