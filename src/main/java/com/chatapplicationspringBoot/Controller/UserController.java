@@ -5,10 +5,12 @@ import com.chatapplicationspringBoot.Service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@EnableSwagger2
 @RestController
 @RequestMapping("/user")
 public class UserController {

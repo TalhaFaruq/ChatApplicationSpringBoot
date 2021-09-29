@@ -1,16 +1,18 @@
 package com.chatapplicationspringBoot.Controller;
 
 import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.ChatService;
+import io.swagger.annotations.SwaggerDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@EnableSwagger2
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
@@ -30,6 +32,7 @@ public class ChatController {
 //    }
 
     //This API shows all the chats
+
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
         if (authorization(key1) == true) {
