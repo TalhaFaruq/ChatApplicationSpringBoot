@@ -2,6 +2,8 @@ package com.chatapplicationspringBoot.Controller;
 
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    private static final Logger logger = LogManager.getLogger(ChatController.class);
 
     final UserService userService;
 
@@ -35,15 +39,14 @@ public class UserController {
         int check = userService.findByEmail(email, password);
         switch (check) {
             case 1:
+                logger.info("Logged in", email);
                 return new ResponseEntity("You are now Logged in", HttpStatus.OK);
             case 2:
+                logger.info("Password Wrong", email);
                 return new ResponseEntity("Password Mismatch", HttpStatus.OK);
             default:
                 return new ResponseEntity("Account doesn't exist", HttpStatus.OK);
         }
-
-//        if(userService.findByEmail(email, password)==true)return new ResponseEntity("You are now Logged in",HttpStatus.OK);
-//        else return new ResponseEntity("The account does not exist" ,HttpStatus.OK);
     }
 
     //This API shows all the users
@@ -51,6 +54,7 @@ public class UserController {
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
         if (authorization(key1) == true) {
             List<User> userList = userService.listAllUser();
+            logger.info("Checking List",userList);
             return new ResponseEntity(userList, HttpStatus.OK);
         } else return new ResponseEntity("Not Authorized", HttpStatus.UNAUTHORIZED);
     }
@@ -61,6 +65,7 @@ public class UserController {
         if (authorization(key1) == true) {
             try {
                 User user = userService.getUser(id);
+                logger.info("Get User", user);
                 return new ResponseEntity(user, HttpStatus.OK);
 
             } catch (NoSuchElementException e) {
@@ -74,6 +79,7 @@ public class UserController {
     public ResponseEntity<Object> add(@RequestHeader("Authorization") String key1, @RequestBody User user) {
         if (authorization(key1) == true) {
             userService.saveUser(user);
+            logger.info("New User Added",user);
             return new ResponseEntity("Added in database", HttpStatus.OK);
         } else return new ResponseEntity("Not Authorized", HttpStatus.OK);
     }
@@ -84,6 +90,7 @@ public class UserController {
         if (authorization(key1) == true) {
             try {
                 userService.saveUser(user);
+                logger.info("Updated",user);
                 return new ResponseEntity("The update has been made in database", HttpStatus.OK);
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
@@ -100,6 +107,7 @@ public class UserController {
                 //User userObj = userService.getUser(id);
                 user.setId(id);
                 userService.saveUser(user);
+                logger.info("User Updated",user);
                 return new ResponseEntity("The update has been done", HttpStatus.OK);
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("Not Found", HttpStatus.NOT_FOUND);
@@ -112,6 +120,7 @@ public class UserController {
     public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1) == true) {
             userService.deleteUser(id);
+            logger.info("update");
             return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
         } else return new ResponseEntity("Not Authorized", HttpStatus.OK);
     }

@@ -34,17 +34,24 @@ public class UserService {
         userRepository.save(user);
     }
 
-    //Find by ID User from database
+    /**
+     * Find by ID User from database
+     */
     public User getUser(Long id) {
         return userRepository.findById(id).get();
     }
 
-    //Delete user from db
+
+    /**
+     * Delete user from db
+     */
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-    //Custom API logic for email ;)
+    /**
+     * Custom API logic for email ;)
+     */
     public Integer findByEmail(String email, String password) {
         try {
             User user = userRepository.findByEmail(email);

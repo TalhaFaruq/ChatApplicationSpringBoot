@@ -2,21 +2,49 @@ package com.chatapplicationspringBoot.Service;
 
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
+import com.chatapplicationspringBoot.Repository.UserRepository;
+import com.chatapplicationspringBoot.ResourceNotFoundException.ResourceNotFoundException;
+import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class ChatService {
 
-    //Not Constructor but Autowired
-    @Autowired
+    private static final Logger logger = LogManager.getLogger(ChatService.class.getName());
+
     private ChatRepository chatRepository;
 
+    public ChatService(ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
+    }
+
+    @Autowired
+    private UserRepository userRepository;
+    //public ChatService(UserRepository userRepository) {this.userRepository = userRepository;}
+
+    public List<Chat> Listallchatbyuserid(Long userID) {
+        return chatRepository.findByUserId(userID);
+        }
+
+    public Chat createuserchat(Long userID, Chat chat) throws Exception {
+        return userRepository.findById(userID).map(user -> {
+            chat.setUser(user);
+            return chatRepository.save(chat);
+        }).orElseThrow(() -> new Exception("Not Found"));
+
+    }
+
+
     //Get all chat from Database
-    public List<Chat> Listallchat(){
+    public List<Chat> Listallchat() {
         return chatRepository.findAll();
     }
 
@@ -29,7 +57,7 @@ public class ChatService {
     }
 
     //Update chat into database by getting values from controller
-    public void updateChat(Chat chat){
+    public void updateChat(Chat chat) {
         Date date = new Date();
         chat.setUpdatedQuestionDate(date.toString());
         chat.setUpdatedAnswerDate(date.toString());

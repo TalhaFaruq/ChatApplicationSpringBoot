@@ -21,6 +21,17 @@ public class Chat {
     @Column(nullable = true)
     private String updatedAnswerDate;  //Chat answer Updated Date
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public long getId() {
         return id;

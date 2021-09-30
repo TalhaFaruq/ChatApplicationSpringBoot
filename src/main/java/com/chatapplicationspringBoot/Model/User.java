@@ -1,8 +1,11 @@
 package com.chatapplicationspringBoot.Model;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User {
+
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
@@ -19,11 +22,14 @@ public class User {
     @Column(nullable = false)
     private String password; //User Password
 
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    private List<Chat> chat;
+
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, String email, int age, String dob, String password) {
-        this.id= id;
+    public User(long uid, String firstName, String lastName, String email, int age, String dob, String password) {
+        this.id = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email=email;
@@ -88,5 +94,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Chat> getChat() {
+        return chat;
+    }
+
+    public void setChat(List<Chat> chat) {
+        this.chat = chat;
     }
 }
