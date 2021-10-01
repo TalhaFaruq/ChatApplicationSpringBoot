@@ -1,4 +1,7 @@
 package com.chatapplicationspringBoot.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,7 +25,8 @@ public class User {
     @Column(nullable = false)
     private String password; //User Password
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("chat")
     private List<Chat> chat;
 
     public User() {
@@ -96,6 +100,8 @@ public class User {
         this.password = password;
     }
 
+
+    @JsonManagedReference
     public List<Chat> getChat() {
         return chat;
     }

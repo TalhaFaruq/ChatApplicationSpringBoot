@@ -3,8 +3,6 @@ package com.chatapplicationspringBoot.Service;
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
-import com.chatapplicationspringBoot.ResourceNotFoundException.ResourceNotFoundException;
-import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -28,7 +25,7 @@ public class ChatService {
 
     @Autowired
     private UserRepository userRepository;
-    //public ChatService(UserRepository userRepository) {this.userRepository = userRepository;}
+   // public ChatService(UserRepository userRepository) {this.userRepository = userRepository;}
 
     public List<Chat> Listallchatbyuserid(Long userID) {
         return chatRepository.findByUserId(userID);

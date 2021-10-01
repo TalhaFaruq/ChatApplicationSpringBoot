@@ -1,5 +1,8 @@
 package com.chatapplicationspringBoot.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,10 +24,12 @@ public class Chat {
     @Column(nullable = true)
     private String updatedAnswerDate;  //Chat answer Updated Date
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("chatList")
     private User user;
 
+    @JsonBackReference
     public User getUser() {
         return user;
     }
