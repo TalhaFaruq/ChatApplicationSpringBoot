@@ -1,6 +1,8 @@
 package com.chatapplicationspringBoot.Service;
 
+import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
+import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +12,22 @@ import java.util.List;
 @Service
 public class UserService {
 
+
     //Not Autowired, Constructor is made
     private final UserRepository userRepository;
     //Constructor
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public void Adduseradnlist(User user, List<Chat> chatList){
+        int i=0;
+        userRepository.save(user);
+        ChatRepository chatRepository = null;
+        while(chatList.iterator().hasNext()){
+            chatRepository.save(chatList.get(i));
+            i++;
+        }
     }
 
     //Get all users from Database

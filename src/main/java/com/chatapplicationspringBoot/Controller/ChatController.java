@@ -35,17 +35,17 @@ public class ChatController {
         return key.equals(key1);
     }
 
-    @GetMapping("/user/{userId}/chat")
-    public ResponseEntity<Object> listcoursebyid(@PathVariable(value = "userId") Long userId) {
-        List<Chat> chatList = chatService.Listallchatbyuserid(userId);
-        return new ResponseEntity(chatList, HttpStatus.OK);
-    }
+//    @GetMapping("/user/{userId}/chat")
+//    public ResponseEntity<Object> listcoursebyid(@PathVariable(value = "userId") Long userId) {
+//        List<Chat> chatList = chatService.Listallchatbyuserid(userId);
+//        return new ResponseEntity(chatList, HttpStatus.OK);
+//    }
 
-    @PostMapping("/user/{userId}/chat")
-    public ResponseEntity<Object> createCourse(@PathVariable(value = "userId") Long userId, @RequestBody Chat chat) throws Exception {
-        chatService.createuserchat(userId, chat);
-        return new ResponseEntity("OK", HttpStatus.OK);
-    }
+//    @PostMapping("/user/{userId}/chat")
+//    public ResponseEntity<Object> createCourse(@PathVariable(value = "userId") Long userId, @RequestBody Chat chat) throws Exception {
+//        chatService.createuserchat(userId, chat);
+//        return new ResponseEntity("OK", HttpStatus.OK);
+//    }
 
     //This API shows all the chats
     @GetMapping("")

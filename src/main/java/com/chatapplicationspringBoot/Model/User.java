@@ -24,9 +24,13 @@ public class User {
     private String dob;//User date of birth
     @Column(nullable = false)
     private String password; //User Password
-
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("chat")
+//
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "post_id")
+//    private List<PostComment> comments = new ArrayList<>()
+//
+    @OneToMany(targetEntity = Chat.class,cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id")
     private List<Chat> chat;
 
     public User() {
@@ -101,7 +105,6 @@ public class User {
     }
 
 
-    @JsonManagedReference
     public List<Chat> getChat() {
         return chat;
     }

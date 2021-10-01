@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.Controller;
 
+import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -47,6 +48,12 @@ public class UserController {
             default:
                 return new ResponseEntity("Account doesn't exist", HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/userchatadd")
+    public ResponseEntity userchatadd(@RequestBody User user, @RequestBody List<Chat> chatList){
+        userService.Adduseradnlist(user,chatList);
+        return new ResponseEntity("Added in database", HttpStatus.OK);
     }
 
     //This API shows all the users
