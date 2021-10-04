@@ -2,14 +2,12 @@ package com.chatapplicationspringBoot.Repository;
 
 import com.chatapplicationspringBoot.Model.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
     //List<Chat> findByUserId(Long userId);
-    // Optional<Chat> findByIdAndUserId(Long id, Long userId);
+    @Query(value = "SELECT *  from chat c where c.user_id = 1 and c.chat_id = 2", nativeQuery = true)
+    String findChatByUserIdAndChatId(long userId, long chatId);
 }

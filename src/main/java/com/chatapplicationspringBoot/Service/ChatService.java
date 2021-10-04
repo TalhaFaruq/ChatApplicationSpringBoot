@@ -1,14 +1,12 @@
 package com.chatapplicationspringBoot.Service;
 
 import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 
@@ -26,23 +24,17 @@ public class ChatService {
 
     @Autowired
     private UserRepository userRepository;
-   // public ChatService(UserRepository userRepository) {this.userRepository = userRepository;}
 
-//    public List<Chat> Listallchatbyuserid(Long userID) {
-//        return chatRepository.findByUserId(userID);
-//        }
-
-//    public Chat createuserchat(Long userID) throws Exception {
-//      return chatRepository.save();
-//    }
-
-
-    //Get all chat from Database
+    /**
+     * Get all chat from Database
+     */
     public List<Chat> Listallchat() {
         return chatRepository.findAll();
     }
 
-    //Save chat into database by getting values from controller
+    /**
+     * Save chat into database by getting values from controller
+     */
     public void saveChat(Chat chat) {
         Date date = new Date();
         chat.setAnswerDate(date.toString());
@@ -50,7 +42,9 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    //Update chat into database by getting values from controller
+    /**
+     * Update chat into database by getting values from controller
+     */
     public void updateChat(Chat chat) {
         Date date = new Date();
         chat.setUpdatedQuestionDate(date.toString());
@@ -58,12 +52,16 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    //Find by ID chat from database
+    /**
+     * Find by ID chat from database
+     */
     public Chat getChat(Long id) {
         return chatRepository.findById(id).get();
     }
 
-    //Delete chat from db
+    /**
+     * Delete chat from db
+     */
     public void deleteChat(Long id) {
         chatRepository.deleteById(id);
     }

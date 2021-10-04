@@ -1,19 +1,23 @@
 package com.chatapplicationspringBoot.Model;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "user")
+//@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+
 public class User {
 
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id; //User ID
-    @Column(nullable = false, unique = true)
+    private long userId; //User ID
+    @Column(nullable = false)
     private String firstName; //User First Name
     @Column(nullable = false)
     private String lastName;//User Last Name
@@ -24,20 +28,21 @@ public class User {
     private String dob;//User date of birth
     @Column(nullable = false)
     private String password; //User Password
-//
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "post_id")
-//    private List<PostComment> comments = new ArrayList<>()
-//
-    @OneToMany(targetEntity = Chat.class,cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id")
+
+    @OneToMany(targetEntity = Chat.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
     private List<Chat> chat;
+
+    @ManyToMany(targetEntity = Category.class,cascade = CascadeType.ALL)
+    @JoinTable(name="user_category", joinColumns=@JoinColumn(name="userId"),
+            inverseJoinColumns=@JoinColumn(name="category_id"))
+    private List<Category> categoryList =  new ArrayList<>();
 
     public User() {
     }
 
     public User(long uid, String firstName, String lastName, String email, int age, String dob, String password) {
-        this.id = uid;
+        this.userId = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email=email;
@@ -47,12 +52,12 @@ public class User {
     }
 
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long id) {
+        this.userId = id;
     }
 
     public String getFirstName() {
@@ -104,12 +109,19 @@ public class User {
         this.password = password;
     }
 
-
     public List<Chat> getChat() {
         return chat;
     }
 
     public void setChat(List<Chat> chat) {
         this.chat = chat;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 }

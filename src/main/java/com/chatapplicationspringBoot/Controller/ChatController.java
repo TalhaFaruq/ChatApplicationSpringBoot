@@ -1,17 +1,14 @@
 package com.chatapplicationspringBoot.Controller;
 
-import com.chatapplicationspringBoot.ResourceNotFoundException.ResourceNotFoundException;
 import io.swagger.annotations.*;
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Service.ChatService;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,26 +25,18 @@ public class ChatController {
     ChatService chatService;
     public ChatController(ChatService chatService) {this.chatService = chatService;}
 
-
+    /**
+     * This is token for checking authorization
+     */
     private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     public boolean authorization(String key1) {
         return key.equals(key1);
     }
 
-//    @GetMapping("/user/{userId}/chat")
-//    public ResponseEntity<Object> listcoursebyid(@PathVariable(value = "userId") Long userId) {
-//        List<Chat> chatList = chatService.Listallchatbyuserid(userId);
-//        return new ResponseEntity(chatList, HttpStatus.OK);
-//    }
-
-//    @PostMapping("/user/{userId}/chat")
-//    public ResponseEntity<Object> createCourse(@PathVariable(value = "userId") Long userId, @RequestBody Chat chat) throws Exception {
-//        chatService.createuserchat(userId, chat);
-//        return new ResponseEntity("OK", HttpStatus.OK);
-//    }
-
-    //This API shows all the chats
+    /**
+     * This API shows all the chats
+     */
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
         if (authorization(key1) == true) {
@@ -58,7 +47,9 @@ public class ChatController {
         else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
-    //This API only show certain object by taking on ID number
+    /**
+     * This API only show certain object by taking on ID number
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1) == true) {
@@ -72,7 +63,9 @@ public class ChatController {
         } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
-    //This API takes question with ID in header
+    /**
+     * This API takes question with ID in header
+     */
     @GetMapping("/question")
     public ResponseEntity<Object> getquestion(@RequestHeader("Authorization") String key1, @RequestParam("question") Long id) {
         if (authorization(key1) == true) {
@@ -86,7 +79,9 @@ public class ChatController {
         } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
-    //This API just add the chat
+    /**
+     * This API just add the chat
+     */
     @PostMapping("/add")
     public ResponseEntity add(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
         if (authorization(key1) == true) {
@@ -96,7 +91,9 @@ public class ChatController {
         }else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
     }
 
-    //This API updates the chat by just giving certain ID all values should be update otherwise other fields will be NULL
+    /**
+     * This API updates the chat by just giving certain ID all values should be update otherwise other fields will be NULL
+     */
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
         if (authorization(key1) == true) {
@@ -111,7 +108,9 @@ public class ChatController {
 
     }
 
-    //This API delete certain chat
+    /**
+     * This API delete certain chat
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1) == true) {

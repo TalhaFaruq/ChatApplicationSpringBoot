@@ -12,4 +12,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserRepository extends JpaRepository<User, Long> {
     //for getting email if it exists in database, it can also be done by not giving @Param
     User findByEmail(@Param(value="email") String email);
+//    User findByUserIdAndChatId(long id, long id);
 }

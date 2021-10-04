@@ -1,17 +1,15 @@
 package com.chatapplicationspringBoot.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
+@Table(name = "chat")
 public class Chat {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id; //Chat ID having a question and answer
-    @Column(nullable = false, unique = true)
+    private long chatId; //Chat ID having a question and answer
+    @Column(nullable = false)
     private String question; //Chat question
     @Column(nullable = false)
     private String answer; //Chat answer
@@ -38,12 +36,12 @@ public class Chat {
 //        this.user = user;
 //    }
 
-    public long getId() {
-        return id;
+    public long getChatId() {
+        return chatId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setChatId(long id) {
+        this.chatId = id;
     }
 
     public String getQuestion() {

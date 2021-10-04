@@ -4,6 +4,7 @@ import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,9 +16,12 @@ public class UserService {
 
     //Not Autowired, Constructor is made
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
     //Constructor
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, ChatRepository chatRepository) {
         this.userRepository = userRepository;
+        this.chatRepository = chatRepository;
     }
 
     public void Adduseradnlist(User user, List<Chat> chatList){
@@ -35,16 +39,34 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    //Save User into database by getting values from controller
+    /**
+     * Save User into database by getting values from controller
+     */
     public void saveUser(User user) {
         Date date = new Date();
         user.setDob(date.toString());
+        int size=user.getChat().size();
+        for(int i = 0; i<size ;i++){
+            user.getChat().get(i).setQuestionDate(date.toString());
+            user.getChat().get(i).setAnswerDate((date.toString()));
+        }
         userRepository.save(user);
     }
 
-    //Update user into database by getting values from controller
+    /**
+     * Update user into database by getting values from controller
+     */
     public void updateUser(User user) {
+
         userRepository.save(user);
+    }
+
+    /**
+     * Update by user ID But chat greater then 1 is not showing
+     */
+    public String updateChat(Long chatid, Long userid){
+        String chat = chatRepository.findChatByUserIdAndChatId(userid,chatid);
+        return chat;
     }
 
     /**
@@ -53,7 +75,6 @@ public class UserService {
     public User getUser(Long id) {
         return userRepository.findById(id).get();
     }
-
 
     /**
      * Delete user from db
