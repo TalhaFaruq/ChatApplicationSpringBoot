@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class ChatService {
 
-    private static final Logger logger = LogManager.getLogger(ChatService.class.getName());
+    public static final Logger logger = LogManager.getLogger(ChatService.class.getName());
 
     private ChatRepository chatRepository;
 

@@ -27,7 +27,6 @@ public class UserService {
     public void Adduseradnlist(User user, List<Chat> chatList){
         int i=0;
         userRepository.save(user);
-        ChatRepository chatRepository = null;
         while(chatList.iterator().hasNext()){
             chatRepository.save(chatList.get(i));
             i++;
@@ -65,8 +64,7 @@ public class UserService {
      * Update by user ID But chat greater then 1 is not showing
      */
     public String updateChat(Long chatid, Long userid){
-        String chat = chatRepository.findChatByUserIdAndChatId(userid,chatid);
-        return chat;
+        return chatRepository.findChatByUserIdAndChatId(userid,chatid);
     }
 
     /**

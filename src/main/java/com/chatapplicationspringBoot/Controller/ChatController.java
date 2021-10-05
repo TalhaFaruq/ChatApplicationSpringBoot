@@ -34,17 +34,19 @@ public class ChatController {
         return key.equals(key1);
     }
 
+    private final String na="Not Authorize";
+
     /**
      * This API shows all the chats
      */
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             logger.info("checking logs");
             List<Chat> chatList = chatService.Listallchat();
             return new ResponseEntity(chatList, HttpStatus.OK);
         }
-        else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+        else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -52,7 +54,7 @@ public class ChatController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 Chat chat = chatService.getChat(id);
                 logger.info("Get Chat from db with certain ID");
@@ -60,7 +62,7 @@ public class ChatController {
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("Not Exist",HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -68,7 +70,7 @@ public class ChatController {
      */
     @GetMapping("/question")
     public ResponseEntity<Object> getquestion(@RequestHeader("Authorization") String key1, @RequestParam("question") Long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 Chat chat = chatService.getChat(id);
                 logger.info("Quesiton with ID",chat);
@@ -76,7 +78,7 @@ public class ChatController {
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("Not Exist",HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -84,11 +86,11 @@ public class ChatController {
      */
     @PostMapping("/add")
     public ResponseEntity add(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             chatService.saveChat(chat);
             logger.info("Chat Add into db",chat);
             return new ResponseEntity(HttpStatus.OK);
-        }else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+        }else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -96,7 +98,7 @@ public class ChatController {
      */
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 chatService.updateChat(chat);
                 logger.info("Updated",chat);
@@ -104,7 +106,7 @@ public class ChatController {
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("Not Exist",HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized",HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
 
     }
 
@@ -113,11 +115,11 @@ public class ChatController {
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             chatService.deleteChat(id);
             logger.debug(id);
             return new ResponseEntity("The given ID has been deleted",HttpStatus.OK);
         }
-        else return new ResponseEntity("Not Authorized",HttpStatus.OK);
+        else return new ResponseEntity(na,HttpStatus.OK);
     }
 }

@@ -19,6 +19,7 @@ public class UserController {
     private static final Logger logger = LogManager.getLogger(ChatController.class);
 
     final UserService userService;
+    private final String na="Not Authorize";
 
     /**
      * UserService constructor, used in place of Autowired
@@ -61,11 +62,11 @@ public class UserController {
      */
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             List<User> userList = userService.listAllUser();
             logger.info("Checking List",userList);
             return new ResponseEntity(userList, HttpStatus.OK);
-        } else return new ResponseEntity("Not Authorized", HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -73,7 +74,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 User user = userService.getUser(id);
                 logger.info("Get User", user);
@@ -82,7 +83,7 @@ public class UserController {
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("Not Exist", HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized", HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -90,11 +91,11 @@ public class UserController {
      */
     @PostMapping("/add")
     public ResponseEntity<Object> add(@RequestHeader("Authorization") String key1, @RequestBody User user) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             userService.saveUser(user);
             logger.info("New User Added",user);
             return new ResponseEntity("Added in database", HttpStatus.OK);
-        } else return new ResponseEntity("Not Authorized", HttpStatus.OK);
+        } else return new ResponseEntity(na, HttpStatus.OK);
     }
 
     /**
@@ -102,7 +103,7 @@ public class UserController {
      */
     @PutMapping("/update/")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody User user) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 userService.updateUser(user);
                 logger.info("Updated",user);
@@ -110,7 +111,7 @@ public class UserController {
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized", HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
 
     }
 
@@ -119,7 +120,7 @@ public class UserController {
      */
     @PutMapping("/update/{id}")
     public ResponseEntity update(@RequestHeader("Authorization") String key1, @RequestBody User user, @PathVariable long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 //User userObj = userService.getUser(id);
                 user.setUserId(id);
@@ -129,7 +130,7 @@ public class UserController {
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("Not Found", HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized", HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -137,23 +138,23 @@ public class UserController {
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             userService.deleteUser(id);
             logger.info("update");
             return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
-        } else return new ResponseEntity("Not Authorized", HttpStatus.OK);
+        } else return new ResponseEntity(na, HttpStatus.OK);
     }
 
     @PutMapping("/update/chat/{id}/")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @PathVariable (value = "id") Long chatId, @RequestParam (value = "userId") Long userId) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 String chat = userService.updateChat(userId,chatId);
                 return new ResponseEntity(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
             }
-        } else return new ResponseEntity("Not Authorized", HttpStatus.UNAUTHORIZED);
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
 
     }
 }

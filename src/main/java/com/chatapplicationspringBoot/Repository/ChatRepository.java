@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
-    //List<Chat> findByUserId(Long userId);
     @Query(value = "SELECT *  from chat c where c.user_id = 1 and c.chat_id = 2", nativeQuery = true)
     String findChatByUserIdAndChatId(long userId, long chatId);
 }
