@@ -11,6 +11,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * @author Talha Farooq
+ * @version 0.3
+ * @description This class is Controller class which just takes the data from frontend and give data to frontend. Authorization is check in this class. Also
+ * This class contains servlets path. It contains api list all users, update certain user, find user and delete user. This class also contains
+ * onetomany relationship with chat class and manytomany relationship with category class. All relationship are unidirectional.
+ * @createdTime 5 October 2021
+ */
 @EnableSwagger2
 @RestController
 @RequestMapping("/user")
@@ -35,8 +43,8 @@ public class UserController {
     /**
      * Authorization function
      */
-    public Boolean authorization(String key1) {
-        return key.equals(key1);
+    public Boolean authorization(String token) {
+        return key.equals(token);
     }
 
     /**
@@ -51,22 +59,32 @@ public class UserController {
     }
 
     /**
-     * This API shows all the users
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the user from database in ArrayList and shows it in frontend. With Authorization token. With User
+     * chat and category is also shown as that is because of relationship
+     * @createdTime 5 October 2021
      */
-    @GetMapping("")
-    public ResponseEntity<List<User>> list(@RequestHeader("Authorization") String key1) {
-        if (authorization(key1)) {
+    @GetMapping("all")
+    public ResponseEntity<List<User>> listAllUsers(@RequestHeader("Authorization") String token) {
+        if (authorization(token)) {
             logger.info("Checking List");
             return userService.listAllUser();
         } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
     /**
-     * This API only show certain object by taking on ID number
+     * @return ResponseEntity with object
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the user from database in object and shows it in frontend. With Authorization token. object in which chats and
+     * cateegory will both be shown as they are associated with user
+     * @createdTime 5 October 2021
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> getByUserID(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        if (authorization(token)) {
             try {
                 ResponseEntity<User> user = userService.getUser(id);
                 logger.info("Get User", user);
@@ -79,11 +97,15 @@ public class UserController {
     }
 
     /**
-     * This API just add the user
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the user from frontend in json. With Authorization token.
+     * @createdTime 5 October 2021
      */
     @PostMapping("/add")
-    public ResponseEntity<Object> add(@RequestHeader("Authorization") String key1, @RequestBody User user) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> addUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
+        if (authorization(token)) {
             userService.saveUser(user);
             logger.info("New User Added",user);
             return new ResponseEntity("Added in database", HttpStatus.OK);
@@ -91,11 +113,15 @@ public class UserController {
     }
 
     /**
-     * This API updates the user by just giving certain ID all values should be update otherwise other fields will be NULL
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API update the user in database. With Authorization token.
+     * @createdTime 5 October 2021
      */
     @PutMapping("/update/")
-    public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody User user) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
+        if (authorization(token)) {
             try {
                 userService.updateUser(user);
                 logger.info("Updated",user);
@@ -107,30 +133,17 @@ public class UserController {
 
     }
 
-    /**
-     * This API updates checks auto by searching that id into database
-     */
-    @PutMapping("/update/{id}")
-    public ResponseEntity update(@RequestHeader("Authorization") String key1, @RequestBody User user, @PathVariable long id) {
-        if (authorization(key1)) {
-            try {
-                //User userObj = userService.getUser(id);
-                user.setUserId(id);
-                userService.updateUser(user);
-                logger.info("User Updated",user);
-                return new ResponseEntity("The update has been done", HttpStatus.OK);
-            } catch (NoSuchElementException e) {
-                return new ResponseEntity("Not Found", HttpStatus.NOT_FOUND);
-            }
-        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
-    }
 
     /**
-     * This API deletes the user
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API delete certain user in the database
+     * @createdTime 5 October 2021
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1)) {
+    public ResponseEntity deleteUser(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        if (authorization(token)) {
             userService.deleteUser(id);
             logger.info("update");
             return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
@@ -138,11 +151,15 @@ public class UserController {
     }
 
     /**
-     * Update chat with certain ID
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API update chat in database. With Authorization token.
+     * @createdTime 5 October 2021
      */
     @PutMapping("/update/chat/{id}/")
-    public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @PathVariable (value = "id") Long chatId, @RequestParam (value = "userId") Long userId) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> updateChatfromUser(@RequestHeader("Authorization") String token, @PathVariable (value = "id") Long chatId, @RequestParam (value = "userId") Long userId) {
+        if (authorization(token)) {
             try {
                 String chat = userService.updateChat(userId,chatId);
                 return new ResponseEntity(chat, HttpStatus.OK);

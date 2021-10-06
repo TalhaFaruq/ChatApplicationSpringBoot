@@ -4,6 +4,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author Talha Farooq
+ * @version 0.3
+ * @description Pojo Class/ Entity Class for Chat
+ * @createdTime 5 October 2021
+ */
 @Data
 @Entity
 @Table(name = "chat")

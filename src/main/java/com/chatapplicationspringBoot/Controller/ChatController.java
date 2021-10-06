@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.Controller;
 
+import com.chatapplicationspringBoot.Model.Category;
 import io.swagger.annotations.*;
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Service.ChatService;
@@ -12,15 +13,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * @author Talha Farooq
+ * @version 0.3
+ * @description This class is Controller class which just takes the data from frontend and give data to frontend. Authorization is check in this class. Also
+ * This class contains servlets path. It contains api list all chats, update certain chat, find chat and delete chat.
+ * @createdTime 5 October 2021
+ */
 @EnableSwagger2
 @RestController
 @RequestMapping("/chat")
-@Api(value = "This is chat class")
-
 public class ChatController {
 
     /**
-     * Object Created for Logger Class
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This just create logger object to use in further program
+     * @createdTime 5 October 2021
      */
     private static final Logger logger = LogManager.getLogger(ChatController.class);
 
@@ -35,18 +44,22 @@ public class ChatController {
     /**
      * Function for Authorization class
      */
-    public boolean authorization(String key1) {
-        return key.equals(key1);
+    public boolean authorization(String token) {
+        return key.equals(token);
     }
 
     private final String na="Not Authorize";
 
     /**
-     * This API shows all the chats
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the chats from database in ArrayList and shows it in frontend. With Authorization token.
+     * @createdTime 5 October 2021
      */
-    @GetMapping("")
-    public ResponseEntity<List<Chat>> list(@RequestHeader("Authorization") String key1) {
-        if (authorization(key1)) {
+    @GetMapping("/all")
+    public ResponseEntity<List<Chat>> listAllChat(@RequestHeader("Authorization") String token) {
+        if (authorization(token)) {
             logger.info("checking logs");
             return chatService.Listallchat();
         }
@@ -54,11 +67,15 @@ public class ChatController {
     }
 
     /**
-     * This API only show certain object by taking on ID number
+     * @return ResponseEntity with object
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the chat from database in object by certain ID and shows it in frontend. With Authorization token.
+     * @createdTime 5 October 2021
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> getByChatId(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        if (authorization(token)) {
             try {
                 ResponseEntity<Chat> chat = chatService.getChat(id);
                 logger.info("Get Chat from db with certain ID");
@@ -70,11 +87,15 @@ public class ChatController {
     }
 
     /**
-     * This API takes question with ID in header
+     * @return ResponseEntity with an object whose question ID is match with given id
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the chat from database in object by question id matching and shows it in frontend. With Authorization token.
+     * @createdTime 5 October 2021
      */
     @GetMapping("/question")
-    public ResponseEntity<Object> getquestion(@RequestHeader("Authorization") String key1, @RequestParam("question") Long id) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> getByQuestion(@RequestHeader("Authorization") String token, @RequestParam("question") Long id) {
+        if (authorization(token)) {
             try {
                 ResponseEntity<Chat> chat = chatService.getChat(id);
                 logger.info("Quesiton with ID",chat);
@@ -86,23 +107,33 @@ public class ChatController {
     }
 
     /**
-     * This API just add the chat
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API get the data from frontend in json. With Authorization token. At same time more than one object can be saved.
+     * @createdTime 5 October 2021
      */
     @PostMapping("/add")
-    public ResponseEntity add(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
-        if (authorization(key1)) {
-            chatService.saveChat(chat);
-            logger.info("Chat Add into db",chat);
+    public ResponseEntity addChats(@RequestHeader("Authorization") String token, @RequestBody List<Chat> chatList) {
+        if (authorization(token)) {
+            for (Chat chats : chatList) {
+                chatService.saveChat(chats);
+            }
+            logger.info("Chat Added into db",chatList);
             return new ResponseEntity(HttpStatus.OK);
         }else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
     }
 
     /**
-     * This API updates the chat by just giving certain ID all values should be update otherwise other fields will be NULL
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API updates the chat in database. With Authorization token.
+     * @createdTime 5 October 2021
      */
     @PutMapping("/update")
-    public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> updateChat(@RequestHeader("Authorization") String token, @RequestBody Chat chat) {
+        if (authorization(token)) {
             try {
                 chatService.updateChat(chat);
                 logger.info("Updated",chat);
@@ -115,11 +146,15 @@ public class ChatController {
     }
 
     /**
-     * This API delete certain chat
+     * @return Just returns ResponseEntity
+     * @author Talha Farooq
+     * @version 0.3
+     * @description This API delete certain chat in the database
+     * @createdTime 5 October 2021
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        if (authorization(key1)) {
+    public ResponseEntity deleteChat(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        if (authorization(token)) {
             chatService.deleteChat(id);
             logger.debug(id);
             return new ResponseEntity("The given ID has been deleted",HttpStatus.OK);

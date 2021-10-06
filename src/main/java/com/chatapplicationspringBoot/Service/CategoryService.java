@@ -61,9 +61,11 @@ public class CategoryService {
      */
     public ResponseEntity saveCategory(Category category) {
         try {
-            categoryRepository.save(category);
-            logger.info("Saving Category");
-            return new ResponseEntity(HttpStatus.OK);
+            if (category.getName()!= null) {
+                categoryRepository.save(category);
+                logger.info("Saving Category");
+                return new ResponseEntity(HttpStatus.OK);
+            } else return new ResponseEntity("Do not give null values", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity("Unable to save Category in database", HttpStatus.NOT_FOUND);
         }

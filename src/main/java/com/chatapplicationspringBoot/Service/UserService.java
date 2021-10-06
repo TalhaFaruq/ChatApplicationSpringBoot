@@ -133,7 +133,7 @@ public class UserService {
             logger.info("Getting user by ID");
             return ResponseEntity.ok().body(userobj);
         } catch (Exception e) {
-            return new ResponseEntity("Cannot access certain user by id from database", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("User does not Exist in database", HttpStatus.NOT_FOUND);
         }
 
     }

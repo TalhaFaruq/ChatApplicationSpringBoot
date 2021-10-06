@@ -7,7 +7,10 @@ import java.util.List;
 
 
 /**
- * User
+ * @author Talha Farooq
+ * @version 0.3
+ * @description Pojo Class/ Entity Class for User
+ * @createdTime 5 October 2021
  */
 @Data
 @Entity
