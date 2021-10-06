@@ -44,28 +44,20 @@ public class UserController {
      */
     @GetMapping("/login")
     public ResponseEntity login(@RequestParam("email") String email, @RequestParam("password") String password) {
-        int check = userService.findByEmail(email, password);
-        switch (check) {
-            case 1:
-                logger.info("Logged in", email);
-                return new ResponseEntity("You are now Logged in", HttpStatus.OK);
-            case 2:
-                logger.info("Password Wrong", email);
-                return new ResponseEntity("Password Mismatch", HttpStatus.OK);
-            default:
-                return new ResponseEntity("Account doesn't exist", HttpStatus.OK);
-        }
+         if(userService.findByEmailandPassword(email, password)){
+             return new ResponseEntity("Logged in", HttpStatus.OK);
+         }
+         else return new ResponseEntity("Email not Exist", HttpStatus.OK);
     }
 
     /**
      * This API shows all the users
      */
     @GetMapping("")
-    public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
+    public ResponseEntity<List<User>> list(@RequestHeader("Authorization") String key1) {
         if (authorization(key1)) {
-            List<User> userList = userService.listAllUser();
-            logger.info("Checking List",userList);
-            return new ResponseEntity(userList, HttpStatus.OK);
+            logger.info("Checking List");
+            return userService.listAllUser();
         } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
@@ -76,7 +68,7 @@ public class UserController {
     public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1)) {
             try {
-                User user = userService.getUser(id);
+                ResponseEntity<User> user = userService.getUser(id);
                 logger.info("Get User", user);
                 return new ResponseEntity(user, HttpStatus.OK);
 
@@ -145,6 +137,9 @@ public class UserController {
         } else return new ResponseEntity(na, HttpStatus.OK);
     }
 
+    /**
+     * Update chat with certain ID
+     */
     @PutMapping("/update/chat/{id}/")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @PathVariable (value = "id") Long chatId, @RequestParam (value = "userId") Long userId) {
         if (authorization(key1)) {

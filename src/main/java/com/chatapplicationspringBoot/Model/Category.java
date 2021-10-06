@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.Model;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,8 +11,9 @@ import javax.persistence.*;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @Column(nullable = false, unique = true)
+    private Long id;          //Auto generate ID
+    @NotNull
+    @Column(unique = true)
     private String name;
 
 

@@ -5,10 +5,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * User
+ */
 @Data
 @Entity
 @Table(name = "user")
-//@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
 
     @Id
@@ -22,11 +25,12 @@ public class User {
     @Column(nullable = false,unique = true)
     private String email;//User email
     private int age;//User age
-    @Column(nullable = true)
-    private String dob;//User date of birth
     @Column(nullable = false)
     private String password; //User Password
 
+    /**
+     * For one to many relationship with Chat  i.e. one user can create many chats (Unidirectional)
+     */
     @OneToMany(targetEntity = Chat.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private List<Chat> chat;

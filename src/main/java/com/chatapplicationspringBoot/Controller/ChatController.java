@@ -19,7 +19,9 @@ import java.util.NoSuchElementException;
 
 public class ChatController {
 
-    //Object Created for Logger Class
+    /**
+     * Object Created for Logger Class
+     */
     private static final Logger logger = LogManager.getLogger(ChatController.class);
 
     ChatService chatService;
@@ -30,6 +32,9 @@ public class ChatController {
      */
     private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
+    /**
+     * Function for Authorization class
+     */
     public boolean authorization(String key1) {
         return key.equals(key1);
     }
@@ -40,11 +45,10 @@ public class ChatController {
      * This API shows all the chats
      */
     @GetMapping("")
-    public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
+    public ResponseEntity<List<Chat>> list(@RequestHeader("Authorization") String key1) {
         if (authorization(key1)) {
             logger.info("checking logs");
-            List<Chat> chatList = chatService.Listallchat();
-            return new ResponseEntity(chatList, HttpStatus.OK);
+            return chatService.Listallchat();
         }
         else return new ResponseEntity(na,HttpStatus.UNAUTHORIZED);
     }
@@ -56,7 +60,7 @@ public class ChatController {
     public ResponseEntity<Object> get(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1)) {
             try {
-                Chat chat = chatService.getChat(id);
+                ResponseEntity<Chat> chat = chatService.getChat(id);
                 logger.info("Get Chat from db with certain ID");
                 return new ResponseEntity(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
@@ -72,7 +76,7 @@ public class ChatController {
     public ResponseEntity<Object> getquestion(@RequestHeader("Authorization") String key1, @RequestParam("question") Long id) {
         if (authorization(key1)) {
             try {
-                Chat chat = chatService.getChat(id);
+                ResponseEntity<Chat> chat = chatService.getChat(id);
                 logger.info("Quesiton with ID",chat);
                 return new ResponseEntity(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
