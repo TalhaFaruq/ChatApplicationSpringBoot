@@ -1,6 +1,6 @@
 package com.chatapplicationspringBoot.Controller;
 
-import com.chatapplicationspringBoot.Model.User;
+import com.chatapplicationspringBoot.Model.Entity.User;
 import com.chatapplicationspringBoot.Service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -157,7 +157,7 @@ public class UserController {
      * @description This API update chat in database. With Authorization token.
      * @createdTime 5 October 2021
      */
-    @PutMapping("/update/chat/{id}/")
+    @GetMapping("/update/chat/{id}/")
     public ResponseEntity<Object> updateChatfromUser(@RequestHeader("Authorization") String token, @PathVariable (value = "id") Long chatId, @RequestParam (value = "userId") Long userId) {
         if (authorization(token)) {
             try {

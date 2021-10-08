@@ -1,6 +1,6 @@
 package com.chatapplicationspringBoot.Service;
 
-import com.chatapplicationspringBoot.Model.User;
+import com.chatapplicationspringBoot.Model.Entity.User;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -169,4 +169,9 @@ public class UserService {
             return false;
         }
     }
+
+//    public ResponseEntity getuseridchatid(Long userId, Long chatId){
+//
+//    }
+
 }

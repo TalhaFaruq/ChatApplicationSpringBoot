@@ -1,6 +1,6 @@
 package com.chatapplicationspringBoot.Service;
 
-import com.chatapplicationspringBoot.Model.Category;
+import com.chatapplicationspringBoot.Model.Entity.Category;
 import com.chatapplicationspringBoot.Repository.CategoryRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +18,7 @@ import java.util.List;
  * ID, update category and delete category by certain ID. Logger is also used to keep tracks of logs whenever any api is called
  * the logs will be saved in file.
  * @creationDate 05 Octuber 2021
+ * @updated date
  */
 @Service
 public class CategoryService {
