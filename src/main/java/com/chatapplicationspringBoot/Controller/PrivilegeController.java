@@ -1,24 +1,22 @@
 package com.chatapplicationspringBoot.Controller;
 
+import com.chatapplicationspringBoot.Model.Entity.Privilege;
 import com.chatapplicationspringBoot.Model.Entity.Role;
+import com.chatapplicationspringBoot.Service.PrivilegeService;
 import com.chatapplicationspringBoot.Service.RoleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
-@EnableSwagger2
-@RestController
-@RequestMapping("/role")
-public class RoleController {
+public class PrivilegeController {
+    private PrivilegeService privilegeService;
 
-    private RoleService roleService;
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
+    public PrivilegeController(PrivilegeService privilegeService) {
+        this.privilegeService = privilegeService;
     }
 
     private static final Logger logger = LogManager.getLogger(RoleController.class);
@@ -30,30 +28,33 @@ public class RoleController {
     }
 
     @GetMapping("/listAll")
-    public ResponseEntity<Object> listAllRoles(@RequestHeader("Authorization") String token){
+    public ResponseEntity<Object> listAllPrivileges(@RequestHeader("Authorization") String token){
         if(authorization(token))
-        return roleService.ListAllRoles();
-        else return new ResponseEntity<>("Blah", HttpStatus.NOT_FOUND);
+            return privilegeService.ListAllPrivilege();
+        else return new ResponseEntity<>("Listing all Pivileges", HttpStatus.NOT_FOUND);
 
     }
+
     @PostMapping("/add")
-    public ResponseEntity addRole(@RequestHeader("Authorization") String token, @RequestBody List<Role> roleList) {
+    public ResponseEntity addPrivilege(@RequestHeader("Authorization") String token, @RequestBody List<Privilege> privilegeList) {
         if (authorization(token)) {
-            for (Role roles : roleList) {
-                roleService.addRole(roles);
+            for (Privilege privilege : privilegeList) {
+                privilegeService.addPrivilege(privilege);
             }
-            logger.info("Chat Added into db",roleList);
+            logger.info("Privilege Added into db",privilegeList);
             return new ResponseEntity(HttpStatus.OK);
         }else return new ResponseEntity("Not Authorize",HttpStatus.UNAUTHORIZED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteRole(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+    public ResponseEntity deletePrivilege(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            roleService.deleteRolebytID(id);
-            logger.info("update");
+            privilegeService.deletePrivilegebytID(id);
+            logger.info("Deleted");
             return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
         } else return new ResponseEntity("Not Authorize", HttpStatus.UNAUTHORIZED);
     }
 
 }
+
+
