@@ -1,31 +1,39 @@
-2021-10-11 13:11:39,692 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-06 with PID 3644 (E:\Kamran Code\ChatApplicationSpringBoot\target\classes started by Talha in E:\Kamran Code\ChatApplicationSpringBoot)
-2021-10-11 13:11:39,723 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
-2021-10-11 13:11:42,035 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2021-10-11 13:11:42,223 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 154 ms. Found 3 JPA repository interfaces.
-2021-10-11 13:11:43,785 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2021-10-11 13:11:43,801 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2021-10-11 13:11:43,801 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
-2021-10-11 13:11:43,801 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
-2021-10-11 13:11:44,051 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2021-10-11 13:11:44,051 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 4047 ms
-2021-10-11 13:11:44,426 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-10-11 13:11:44,738 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
-2021-10-11 13:11:45,066 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2021-10-11 13:11:45,316 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
-2021-10-11 13:11:45,988 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
-2021-10-11 13:11:46,035 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
-2021-10-11 13:11:48,587 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-10-11 13:11:48,618 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-10-11 13:11:50,243 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-10-11 13:11:53,657 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2021-10-11 13:11:53,751 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2021-10-11 13:11:53,751 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
-2021-10-11 13:11:53,845 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
-2021-10-11 13:11:53,923 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
-2021-10-11 13:11:55,126 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 16.835 seconds (JVM running for 23.13)
-2021-10-11 13:12:01,002 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-10-11 13:12:01,003 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
-2021-10-11 13:12:01,006 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 3 ms
-2021-10-11 13:12:19,236 INFO c.c.S.UserService [http-nio-8080-exec-2] Getting user by ID
-2021-10-11 13:12:19,238 INFO c.c.C.UserController [http-nio-8080-exec-2] Get User
-2021-10-11 13:52:38,583 WARN c.z.h.p.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=39m19s339ms887µs600ns).
+2021-10-11 15:50:53,742 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-06 with PID 10656 (E:\Kamran Code\ChatApplicationSpringBoot\target\classes started by Talha in E:\Kamran Code\ChatApplicationSpringBoot)
+2021-10-11 15:50:53,757 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-10-11 15:50:55,866 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-10-11 15:50:56,038 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 139 ms. Found 4 JPA repository interfaces.
+2021-10-11 15:50:57,163 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2021-10-11 15:50:57,179 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-11 15:50:57,179 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2021-10-11 15:50:57,179 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
+2021-10-11 15:50:57,429 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2021-10-11 15:50:57,429 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3484 ms
+2021-10-11 15:50:57,741 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-10-11 15:50:58,023 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-10-11 15:50:58,304 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-10-11 15:50:58,523 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2021-10-11 15:50:59,163 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2021-10-11 15:50:59,210 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-10-11 15:51:01,163 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-10-11 15:51:01,179 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-10-11 15:51:02,694 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-10-11 15:51:04,116 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2021-10-11 15:51:04,163 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2021-10-11 15:51:04,163 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
+2021-10-11 15:51:04,194 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2021-10-11 15:51:04,241 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
+2021-10-11 15:51:05,116 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 12.552 seconds (JVM running for 16.605)
+2021-10-11 15:51:27,525 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-10-11 15:51:27,526 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2021-10-11 15:51:27,528 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 2 ms
+2021-10-11 15:51:36,981 INFO c.c.C.UserController [http-nio-8080-exec-7] Checking List
+2021-10-11 15:51:37,406 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select user0_.user_id as user_id1_3_, user0_.age as age2_3_, user0_.email as email3_3_, user0_.first_name as first_na4_3_, user0_.last_name as last_nam5_3_, user0_.password as password6_3_ from user user0_
+2021-10-11 15:51:37,541 INFO c.c.S.UserService [http-nio-8080-exec-7] In Service class getting All list
+2021-10-11 15:51:37,559 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select chat0_.user_id as user_id8_1_0_, chat0_.chat_id as chat_id1_1_0_, chat0_.chat_id as chat_id1_1_1_, chat0_.answer as answer2_1_1_, chat0_.answer_date as answer_d3_1_1_, chat0_.question as question4_1_1_, chat0_.question_date as question5_1_1_, chat0_.updated_answer_date as updated_6_1_1_, chat0_.updated_question_date as updated_7_1_1_ from chat chat0_ where chat0_.user_id=?
+2021-10-11 15:51:37,614 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select categories0_.user_id as user_id1_4_0_, categories0_.category_id as category2_4_0_, category1_.id as id1_0_1_, category1_.name as name2_0_1_ from user_category categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.user_id=?
+2021-10-11 15:51:37,644 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select roles0_.user_user_id as user_use1_5_0_, roles0_.roles_id as roles_id2_5_0_, role1_.id as id1_2_1_, role1_.description as descript2_2_1_, role1_.name as name3_2_1_ from user_roles roles0_ inner join role role1_ on roles0_.roles_id=role1_.id where roles0_.user_user_id=?
+2021-10-11 15:51:37,648 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select chat0_.user_id as user_id8_1_0_, chat0_.chat_id as chat_id1_1_0_, chat0_.chat_id as chat_id1_1_1_, chat0_.answer as answer2_1_1_, chat0_.answer_date as answer_d3_1_1_, chat0_.question as question4_1_1_, chat0_.question_date as question5_1_1_, chat0_.updated_answer_date as updated_6_1_1_, chat0_.updated_question_date as updated_7_1_1_ from chat chat0_ where chat0_.user_id=?
+2021-10-11 15:51:37,651 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select categories0_.user_id as user_id1_4_0_, categories0_.category_id as category2_4_0_, category1_.id as id1_0_1_, category1_.name as name2_0_1_ from user_category categories0_ inner join category category1_ on categories0_.category_id=category1_.id where categories0_.user_id=?
+2021-10-11 15:51:37,654 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-7] select roles0_.user_user_id as user_use1_5_0_, roles0_.roles_id as roles_id2_5_0_, role1_.id as id1_2_1_, role1_.description as descript2_2_1_, role1_.name as name3_2_1_ from user_roles roles0_ inner join role role1_ on roles0_.roles_id=role1_.id where roles0_.user_user_id=?
+2021-10-11 15:52:08,481 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-8] select role0_.id as id1_2_, role0_.description as descript2_2_, role0_.name as name3_2_ from role role0_
+2021-10-11 15:52:08,549 INFO c.c.S.RoleService [http-nio-8080-exec-8] Getting Roles

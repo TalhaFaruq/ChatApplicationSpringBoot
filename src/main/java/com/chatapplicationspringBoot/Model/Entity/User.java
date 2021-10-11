@@ -45,4 +45,15 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories = new ArrayList<>();
+
+
+    @ManyToMany(cascade = CascadeType.MERGE, targetEntity = Role.class)
+    private List<Role> roles = new ArrayList<>();
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id")
+//    )
+
+
+
 }
