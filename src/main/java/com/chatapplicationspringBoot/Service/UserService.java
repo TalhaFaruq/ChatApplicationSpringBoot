@@ -1,16 +1,21 @@
 package com.chatapplicationspringBoot.Service;
 
 import com.chatapplicationspringBoot.Model.Entity.User;
+import com.chatapplicationspringBoot.Model.Interface.DTOChatCategoriesOther;
+import com.chatapplicationspringBoot.Model.Interface.DTOChatCategory;
+import com.chatapplicationspringBoot.Model.Interface.DTOUser;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Talha Farooq
@@ -23,6 +28,8 @@ import java.util.List;
 @Service
 public class UserService {
 
+    HttpHeaders httpHeaders = new HttpHeaders();
+    URI uri;
 
     /**
      * Not Autowired, Constructor is made
@@ -127,15 +134,19 @@ public class UserService {
      * @description Find by ID user from database
      * @creationDate 05 Octuber 2021
      */
-    public ResponseEntity<User> getUser(Long id) {
+    public ResponseEntity<Object> getUser(Long id) {
         try {
-            User userobj = userRepository.findById(id).get();
-            logger.info("Getting user by ID");
-            return ResponseEntity.ok().body(userobj);
+            Optional<User> useroObj = userRepository.findById(id);
+            logger.info("Getting user by ID",useroObj.toString());
+            if(useroObj.isPresent()){
+                return new ResponseEntity<>(useroObj,HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>("There is no user with this ID",HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity("User does not Exist in database", HttpStatus.NOT_FOUND);
         }
-
     }
 
     /**
@@ -170,8 +181,27 @@ public class UserService {
         }
     }
 
-//    public ResponseEntity getuseridchatid(Long userId, Long chatId){
-//
-//    }
+
+    public ResponseEntity<Object> getChatandCategoryList(Long userId){
+        Optional<User> userObj = userRepository.findById(userId);
+        if(userObj.isPresent()){
+            DTOChatCategory dtoChatCategory = new DTOChatCategory();
+            dtoChatCategory.setCategoryList(userObj.get().getCategories());
+            dtoChatCategory.setChatList(userObj.get().getChat());
+            return ResponseEntity.ok().body(dtoChatCategory);
+        }
+        else {
+            httpHeaders.add("Authorization","user12345");
+            HttpEntity<DTOUser> httpEntity = new HttpEntity(httpHeaders);
+
+            RestTemplate restTemplate = new RestTemplate();
+            String UserResourceUrl= "http://192.168.10.15:8080/user/get/"+userId;
+           ResponseEntity<DTOUser> dtoUser= restTemplate.exchange(UserResourceUrl, HttpMethod.GET, httpEntity , DTOUser.class);
+            DTOChatCategoriesOther dtoChatCatogariesOther= new DTOChatCategoriesOther();
+            dtoChatCatogariesOther.setDtoChats(dtoUser.getBody().getChats());
+            dtoChatCatogariesOther.setDtoCategories(dtoUser.getBody().getCategories());
+            return new ResponseEntity<>(dtoChatCatogariesOther,HttpStatus.FOUND);
+        }
+    }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,12 +28,14 @@ public class UserController {
     private static final Logger logger = LogManager.getLogger(ChatController.class);
 
     final UserService userService;
-    private final String na="Not Authorize";
+    private final String na = "Not Authorize";
 
     /**
      * UserService constructor, used in place of Autowired
      */
-    public UserController(UserService userService) { this.userService = userService; }
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * This is token for checking authorization
@@ -52,10 +55,9 @@ public class UserController {
      */
     @GetMapping("/login")
     public ResponseEntity login(@RequestParam("email") String email, @RequestParam("password") String password) {
-         if(userService.findByEmailandPassword(email, password)){
-             return new ResponseEntity("Logged in", HttpStatus.OK);
-         }
-         else return new ResponseEntity("Email not Exist", HttpStatus.OK);
+        if (userService.findByEmailandPassword(email, password)) {
+            return new ResponseEntity("Logged in", HttpStatus.OK);
+        } else return new ResponseEntity("Email not Exist", HttpStatus.OK);
     }
 
     /**
@@ -86,7 +88,7 @@ public class UserController {
     public ResponseEntity<Object> getByUserID(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
             try {
-                ResponseEntity<User> user = userService.getUser(id);
+                ResponseEntity<Object> user = userService.getUser(id);
                 logger.info("Get User", user);
                 return new ResponseEntity(user, HttpStatus.OK);
 
@@ -107,7 +109,7 @@ public class UserController {
     public ResponseEntity<Object> addUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
         if (authorization(token)) {
             userService.saveUser(user);
-            logger.info("New User Added",user);
+            logger.info("New User Added", user);
             return new ResponseEntity("Added in database", HttpStatus.OK);
         } else return new ResponseEntity(na, HttpStatus.OK);
     }
@@ -124,7 +126,7 @@ public class UserController {
         if (authorization(token)) {
             try {
                 userService.updateUser(user);
-                logger.info("Updated",user);
+                logger.info("Updated", user);
                 return new ResponseEntity("The update has been made in database", HttpStatus.OK);
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
@@ -158,15 +160,27 @@ public class UserController {
      * @createdTime 5 October 2021
      */
     @GetMapping("/update/chat/{id}/")
-    public ResponseEntity<Object> updateChatfromUser(@RequestHeader("Authorization") String token, @PathVariable (value = "id") Long chatId, @RequestParam (value = "userId") Long userId) {
+    public ResponseEntity<Object> updateChatfromUser(@RequestHeader("Authorization") String token, @PathVariable(value = "id") Long chatId, @RequestParam(value = "userId") Long userId) {
         if (authorization(token)) {
             try {
-                String chat = userService.updateChat(userId,chatId);
+                String chat = userService.updateChat(userId, chatId);
                 return new ResponseEntity(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
                 return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
             }
         } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
+    }
 
+    @GetMapping("/chat/category/{userId}")
+    public ResponseEntity<Object> getchatcategory(@RequestHeader("Authorization") String token, @PathVariable(value = "userId") Long userId) {
+        if (authorization(token)) {
+            try {
+                ResponseEntity<Object> chatcategoryList = userService.getChatandCategoryList(userId);
+                return new ResponseEntity(chatcategoryList.getBody(), HttpStatus.OK);
+
+            } catch (NoSuchElementException e) {
+                return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
+            }
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 }
