@@ -11,6 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Talha Farooq
+ * @version 0.3
+ * @Description This class implements logic of API. The Controller send data to their respective service class.
+ * This class is role Service class which has show all role, add role and delete role
+ * certain ID. Logger is also used to keep tracks of logs whenever any api is called the logs will be saved in
+ * file.
+ * @creationDate 11 Octuber 2021
+ */
 @Service
 public class RoleService {
 
