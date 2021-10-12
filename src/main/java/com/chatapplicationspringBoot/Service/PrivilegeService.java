@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,11 +93,17 @@ public class PrivilegeService {
      */
     public ResponseEntity<Object> deletePrivilegebytID(long id){
         try {
-            privilegeRepository.deleteById(id);
+            Optional<Privilege> privilege = privilegeRepository.findById(id);
+            if(privilege.isPresent()){
+            privilege.get().setStatus(true);
+            privilegeRepository.saveAll(privilegeRepository.findAllById(Collections.singleton(id)));
+
             logger.info("Deleted Privilege by"+id);
             return new ResponseEntity("Deleted",HttpStatus.OK);
+            }
+            else return new ResponseEntity<>("ID does not Exist",HttpStatus.NOT_FOUND);
         }catch (Exception e){
-            return new ResponseEntity("ID does not Exist",HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Database error",HttpStatus.NOT_FOUND);
         }
     }
 }

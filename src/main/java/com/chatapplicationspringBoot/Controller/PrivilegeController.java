@@ -86,9 +86,8 @@ public class PrivilegeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deletePrivilege(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            privilegeService.deletePrivilegebytID(id);
-            logger.info("Deleted");
-            return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
+            logger.info("Calling object from service");
+            return privilegeService.deletePrivilegebytID(id);
         } else return new ResponseEntity("Not Authorize", HttpStatus.UNAUTHORIZED);
     }
 

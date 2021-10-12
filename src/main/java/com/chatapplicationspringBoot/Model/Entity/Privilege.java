@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.Model.Entity;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,5 +14,8 @@ public class Privilege {
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
+    @Column(nullable = false)
+    private boolean Status;
+
 
 }

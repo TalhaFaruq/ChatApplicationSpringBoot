@@ -21,7 +21,7 @@ public class Category {
     @NotNull
     @Column(unique = true)
     private String name;
-    @NotNull
+    @Column(nullable = false)
     private boolean status;
 
 

@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.Model.Entity;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class User {
     private int age;//User age
     @Column(nullable = false)
     private String password; //User Password
+    @NotNull
+    private boolean Status;
 
     /**
      * For one to many relationship with Chat  i.e. one user can create many chats (Unidirectional)

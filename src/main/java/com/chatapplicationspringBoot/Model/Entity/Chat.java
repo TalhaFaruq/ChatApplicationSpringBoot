@@ -1,6 +1,5 @@
 package com.chatapplicationspringBoot.Model.Entity;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,7 +26,7 @@ public class Chat {
     private String answerDate;  //Chat answer Date
     private String updatedQuestionDate;     //Chat question Updated Date
     private String updatedAnswerDate;  //Chat answer Updated Date
-    @NotNull
+    @Column(nullable = false)
     private boolean status;
 
 }

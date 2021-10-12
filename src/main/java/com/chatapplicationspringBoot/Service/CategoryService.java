@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Talha Farooq
@@ -62,7 +63,7 @@ public class CategoryService {
      */
     public ResponseEntity saveCategory(Category category) {
         try {
-            if (category.getName()!= null) {
+            if (category.getName() != null) {
                 categoryRepository.save(category);
                 logger.info("Saving Category");
                 return new ResponseEntity(HttpStatus.OK);
@@ -79,11 +80,13 @@ public class CategoryService {
      * @description Find by ID category from database
      * @creationDate 05 Octuber 2021
      */
-    public ResponseEntity<Category> getCategory(Long id) {
+    public ResponseEntity<Object> getCategory(Long id) {
         try {
-            Category categoryResponseEntity = categoryRepository.findById(id).get();
-            logger.info("Finding Category from certain ID");
-            return ResponseEntity.ok().body(categoryResponseEntity);
+            Optional<Category> categoryResponseEntity = categoryRepository.findById(id);
+            if (categoryResponseEntity.isPresent()) {
+                logger.info("Finding Category from certain ID");
+                return ResponseEntity.ok().body(categoryResponseEntity);
+            }else return new ResponseEntity("Does not Exist", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity("Unable to get certain category from database", HttpStatus.NOT_FOUND);
         }
@@ -96,13 +99,19 @@ public class CategoryService {
      * @description Delete category from db
      * @creationDate 05 Octuber 2021
      */
-    public ResponseEntity deleteChat(Long id) {
+    public ResponseEntity<Object> deleteChat(Long id) {
         try {
-            categoryRepository.deleteById(id);
-            logger.info("Deletiog Category");
-            return new ResponseEntity(HttpStatus.OK);
+            Optional<Category> category = categoryRepository.findById(id);
+            if (category.isPresent()) {
+                category.get().setStatus(true);
+                categoryRepository.save(category.get());
+                logger.info("Deletiog Category");
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            else return new ResponseEntity("ID not Exist", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity("Unable to delete Category in database", HttpStatus.NOT_FOUND);
         }
+
     }
 }
