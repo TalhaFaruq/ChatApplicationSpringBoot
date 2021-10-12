@@ -60,7 +60,7 @@ public class UserService {
      */
     public ResponseEntity<List<User>> listAllUser() {
         try {
-            List<User> userList = userRepository.findAll();
+            List<User> userList = (List<User>) userRepository.findByStatus();
             if (!userList.isEmpty()) {
                 logger.info("In Service class getting All list");
                 return ResponseEntity.ok().body(userList);
@@ -81,6 +81,7 @@ public class UserService {
     public ResponseEntity saveUser(User user) {
         try {
             LocalDateTime date = LocalDateTime.now();
+            user.setCreatedDate(date.toString());
             int size = user.getChat().size();
             for (int i = 0; i < size; i++) {
                 user.getChat().get(i).setQuestionDate(date.toString());
@@ -157,9 +158,13 @@ public class UserService {
      */
     public ResponseEntity deleteUser(Long id) {
         try {
-            userRepository.deleteById(id);
-            logger.info("Deleted user by certain ID");
-            return new ResponseEntity(HttpStatus.OK);
+            Optional<User> user = userRepository.findById(id);
+            if(user.isPresent()){
+                user.get().setStatus(true);
+                logger.info("Deleting service class user");
+                return new ResponseEntity("Deleted",HttpStatus.OK);
+            }
+            return new ResponseEntity("User does not Exist",HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity("Cannot Access certain user id from database", HttpStatus.NOT_FOUND);
         }

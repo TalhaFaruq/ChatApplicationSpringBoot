@@ -146,9 +146,8 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteUser(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            userService.deleteUser(id);
-            logger.info("update");
-            return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
+            logger.info("controller class user delete");
+            return userService.deleteUser(id);
         } else return new ResponseEntity(na, HttpStatus.OK);
     }
 

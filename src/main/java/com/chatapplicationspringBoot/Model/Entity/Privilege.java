@@ -16,6 +16,8 @@ public class Privilege {
     private String name;
     @Column(nullable = false)
     private boolean Status;
+    private String createdDate;
+    private String updatedDate;
 
 
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class RoleService {
     public ResponseEntity<Object> ListAllRoles() {
         try {
 
-            List<Role> roleList = roleRepository.findAll();
+            List<Role> roleList = (List<Role>) roleRepository.findByStatus();
             if (!roleList.isEmpty()) {
                 logger.info("Getting Roles", roleList);
                 return new ResponseEntity<>(roleList, HttpStatus.OK);
@@ -62,6 +63,8 @@ public class RoleService {
     public ResponseEntity<Object> addRole(Role role) {
         try {
             roleRepository.save(role);
+            LocalDateTime date = LocalDateTime.now();
+            role.setCreatedDate(date.toString());
             logger.info("Role Added");
             return new ResponseEntity(role, HttpStatus.OK);
         } catch (Exception e) {
@@ -96,7 +99,8 @@ public class RoleService {
         try {
             Optional<Role> role = roleRepository.findById(id);
             if (role.isPresent()) {
-                roleRepository.deleteById(id);
+                role.get().setStatus(true);
+                roleRepository.save(role.get());
                 logger.info("Deleted Role by" + id);
                 return new ResponseEntity("Deleted", HttpStatus.OK);
             } else return new ResponseEntity("ID does not Exist", HttpStatus.NOT_FOUND);

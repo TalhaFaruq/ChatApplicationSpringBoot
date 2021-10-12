@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,11 @@ public class PrivilegeService {
      */
     public ResponseEntity<Object> ListAllPrivilege(){
         try {
-            List<Privilege> privilegeList = privilegeRepository.findAll();
+            List<Privilege> privilegeList = (List<Privilege>) privilegeRepository.findByStatus();
             logger.info("Getting Privilege", privilegeList);
             return new ResponseEntity<>(privilegeList, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity("Privilege doesnot Exist",HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Privilege does not Exist",HttpStatus.NOT_FOUND);
         }
     }
 
@@ -59,6 +60,8 @@ public class PrivilegeService {
      */
     public ResponseEntity<Object> addPrivilege(Privilege privilege){
         try{
+            LocalDateTime date = LocalDateTime.now();
+            privilege.setCreatedDate(date.toString());
             privilegeRepository.save(privilege);
             logger.info("Privilege Added");
             return new ResponseEntity("Privilege Added", HttpStatus.OK);

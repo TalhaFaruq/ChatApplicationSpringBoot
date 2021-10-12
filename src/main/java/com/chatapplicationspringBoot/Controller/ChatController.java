@@ -153,9 +153,8 @@ public class ChatController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteChat(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            chatService.deleteChat(id);
-            logger.debug(id);
-            return new ResponseEntity("The given ID has been deleted",HttpStatus.OK);
+            logger.info("in chat controller");
+            return chatService.deleteChat(id);
         }
         else return new ResponseEntity(na,HttpStatus.OK);
     }

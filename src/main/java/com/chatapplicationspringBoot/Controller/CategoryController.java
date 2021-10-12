@@ -106,14 +106,10 @@ public class CategoryController {
     public ResponseEntity deleteCategorybyId(@RequestHeader("Authorization") String Token, @PathVariable Long id) {
 
         if (authorization(Token)) {
-            try {
-                categoryService.deleteChat(id);
-                logger.debug(id);
-                return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
-            } catch (NoSuchElementException e) {
-                return new ResponseEntity("Not Exist", HttpStatus.NOT_FOUND);
-            }
-        } else return new ResponseEntity("Does not Exist", HttpStatus.OK);
+        logger.info("Delete in Category Controller");
+        return categoryService.deleteChat(id);
+        }
+        else return new ResponseEntity("Does not Exist", HttpStatus.OK);
     }
 }
 

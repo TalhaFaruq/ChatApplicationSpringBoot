@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ public class CategoryService {
      */
     public ResponseEntity<List<Category>> ListAllCategory() {
         try {
-            List<Category> categoryList = categoryRepository.findAll();
+            List<Category> categoryList = (List<Category>) categoryRepository.findByStatus();
             logger.info("Checking Category List", categoryList);
             return ResponseEntity.ok().body(categoryList);
         } catch (Exception e) {
@@ -64,6 +65,8 @@ public class CategoryService {
     public ResponseEntity saveCategory(Category category) {
         try {
             if (category.getName() != null) {
+                LocalDateTime date = LocalDateTime.now();
+                category.setCreatedDate(date.toString());
                 categoryRepository.save(category);
                 logger.info("Saving Category");
                 return new ResponseEntity(HttpStatus.OK);
@@ -106,7 +109,7 @@ public class CategoryService {
                 category.get().setStatus(true);
                 categoryRepository.save(category.get());
                 logger.info("Deletiog Category");
-                return new ResponseEntity(HttpStatus.OK);
+                return new ResponseEntity("Deleted",HttpStatus.OK);
             }
             else return new ResponseEntity("ID not Exist", HttpStatus.NOT_FOUND);
         } catch (Exception e) {

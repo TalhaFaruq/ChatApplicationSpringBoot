@@ -87,9 +87,8 @@ public class RoleController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteRole(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            roleService.deleteRolebyId(id);
-            logger.info("update");
-            return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
+            logger.info("Controller Role Delete");
+            return roleService.deleteRolebyId(id);
         } else return new ResponseEntity("Not Authorize", HttpStatus.UNAUTHORIZED);
     }
 

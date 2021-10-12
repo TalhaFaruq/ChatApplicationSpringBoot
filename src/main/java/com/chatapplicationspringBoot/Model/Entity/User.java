@@ -33,6 +33,8 @@ public class User {
     private String password; //User Password
     @NotNull
     private boolean Status;
+    private String createdDate;
+    private String updatedDate;
 
     /**
      * For one to many relationship with Chat  i.e. one user can create many chats (Unidirectional)

@@ -23,6 +23,8 @@ public class Category {
     private String name;
     @Column(nullable = false)
     private boolean status;
+    private String createdDate;
+    private String updatedDate;
 
 
 }

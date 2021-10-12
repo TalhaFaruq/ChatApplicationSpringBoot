@@ -44,7 +44,7 @@ public class ChatService {
      */
     public ResponseEntity<List<Chat>> Listallchat() {
         try {
-            List<Chat> chatList = chatRepository.findAll();
+            List<Chat> chatList = (List<Chat>) chatRepository.findByStatus();
             logger.info("Showing all Chats", chatList);
             return ResponseEntity.ok().body(chatList);
         } catch (Exception e) {
@@ -125,9 +125,10 @@ public class ChatService {
         try {
             Optional<Chat> chatOptional = chatRepository.findById(id);
             if(chatOptional.isPresent()){
-            chatRepository.deleteById(id);
+                chatOptional.get().setStatus(true);
+            chatRepository.save(chatOptional.get());
             logger.info("Deleteing Id");
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity("Deleted",HttpStatus.OK);
             }
             else return new ResponseEntity("ID does not Exist", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
