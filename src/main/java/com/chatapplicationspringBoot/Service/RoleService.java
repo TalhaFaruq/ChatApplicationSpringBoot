@@ -31,38 +31,67 @@ public class RoleService {
 
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
+    /**
+     * @return ResponseEntity which return RoleList. and in else it just return not found status
+     * @author Talha Farooq
+     * @version 0.3
+     * @desription This fuction get and show all the RoleList which are saved in database. The data from database
+     * comes in list so chatlist.
+     * @creationDate 11 Octuber 2021
+     */
     public ResponseEntity<Object> ListAllRoles(){
         try {
+
             List<Role> roleList = roleRepository.findAll();
             logger.info("Getting Roles", roleList);
             return new ResponseEntity<>(roleList, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity("Role doesnot Exist",HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Roles does not Exist",HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * @return only responseEntity Status
+     * @author Talha Farooq
+     * @version 0.3
+     * @description Save role into database by getting values from controller
+     * @creationDate 11 Octuber 2021
+     */
     public ResponseEntity<Object> addRole(Role role){
         try{
             roleRepository.save(role);
             logger.info("Role Added");
-            return new ResponseEntity("Role Added", HttpStatus.OK);
+            return new ResponseEntity(role, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity("Database Not Connected", HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * @return ResponseEntity with one object of role
+     * @author Talha Farooq
+     * @version 0.3
+     * @description Find by ID role from database
+     * @creationDate 11 Octuber 2021
+     */
     public ResponseEntity<Object> findRoleById(Long id){
         try{
-            Optional<Role> roleadded = roleRepository.findById(id);
+            Optional<Role> role = roleRepository.findById(id);
             logger.info("Role finding by ID");
-            return ResponseEntity.ok().body(roleadded);
+            return ResponseEntity.ok().body(role);
         }
         catch (Exception e){
             return new ResponseEntity("The role does not Exist",HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<Object> deleteRolebytID(long id){
+    /**
+     * @return ResponseEntity
+     * @author Talha Farooq
+     * @description Delete role from db
+     * @creationDate 11 Octuber 2021
+     */
+    public ResponseEntity<Object> deleteRolebyId(long id){
         try {
             roleRepository.deleteById(id);
             logger.info("Deleted Role by"+id);

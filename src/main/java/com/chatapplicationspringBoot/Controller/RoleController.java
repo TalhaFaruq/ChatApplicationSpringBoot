@@ -25,6 +25,7 @@ public class RoleController {
 
     //Constructor
     private RoleService roleService;
+
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
@@ -86,7 +87,7 @@ public class RoleController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteRole(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            roleService.deleteRolebytID(id);
+            roleService.deleteRolebyId(id);
             logger.info("update");
             return new ResponseEntity("The given ID has been deleted", HttpStatus.OK);
         } else return new ResponseEntity("Not Authorize", HttpStatus.UNAUTHORIZED);

@@ -110,7 +110,7 @@ public class UserController {
         if (authorization(token)) {
             userService.saveUser(user);
             logger.info("New User Added", user);
-            return new ResponseEntity("Added in database", HttpStatus.OK);
+            return new ResponseEntity(user, HttpStatus.OK);
         } else return new ResponseEntity(na, HttpStatus.OK);
     }
 

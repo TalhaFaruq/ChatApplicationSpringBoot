@@ -17,7 +17,7 @@ import java.util.Optional;
  * This class is privilege Service class which has show all privileges, add privilege and delete privilege
  * certain ID. Logger is also used to keep tracks of logs whenever any api is called the logs will be saved in
  * file.
- * @creationDate 11 Octuber 2021
+ * @creationDate 11 October 2021
  */
 @Service
 public class PrivilegeService {
@@ -31,12 +31,12 @@ public class PrivilegeService {
     private static final Logger logger = LogManager.getLogger(Privilege.class);
 
     /**
-     * @return ResponseEntity which return privilegelist. and in else it just return not found status
+     * @return ResponseEntity which return privilege list and in else it just return not found status
      * @author Talha Farooq
      * @version 0.3
-     * @desription This fuction get and show all the privilege which are saved in database. The data from database
+     * @desription This function get and show all the privilege which are saved in database. The data from database
      * comes in list so chatlist.
-     * @creationDate 05 Octuber 2021
+     * @creationDate 11 Octuber 2021
      */
     public ResponseEntity<Object> ListAllPrivilege(){
         try {
@@ -48,6 +48,13 @@ public class PrivilegeService {
         }
     }
 
+    /**
+     * @return only responseEntity Status
+     * @author Talha Farooq
+     * @version 0.3
+     * @description Save privilege into database by getting values from controller
+     * @creationDate 11 Octuber 2021
+     */
     public ResponseEntity<Object> addPrivilege(Privilege privilege){
         try{
             privilegeRepository.save(privilege);
@@ -58,6 +65,13 @@ public class PrivilegeService {
         }
     }
 
+    /**
+     * @return ResponseEntity with one object of privilege
+     * @author Talha Farooq
+     * @version 0.3
+     * @description Find by ID privilege from database
+     * @creationDate 11 Octuber 2021
+     */
     public ResponseEntity<Object> findPrivilegeById(Long id){
         try{
             Optional<Privilege> privilege = privilegeRepository.findById(id);
@@ -69,6 +83,12 @@ public class PrivilegeService {
         }
     }
 
+    /**
+     * @return ResponseEntity
+     * @author Talha Farooq
+     * @description Delete privilege from db
+     * @creationDate 11 Octuber 2021
+     */
     public ResponseEntity<Object> deletePrivilegebytID(long id){
         try {
             privilegeRepository.deleteById(id);
