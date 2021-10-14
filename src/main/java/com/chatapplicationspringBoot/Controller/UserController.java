@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.List;
+import javax.mail.MessagingException;
 import java.util.NoSuchElementException;
 
 /**
@@ -69,7 +69,7 @@ public class UserController {
      * @createdTime 5 October 2021
      */
     @GetMapping("all")
-    public ResponseEntity<List<User>> listAllUsers(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Object> listAllUsers(@RequestHeader("Authorization") String token) {
         if (authorization(token)) {
             logger.info("Checking List");
             return userService.listAllUser();
@@ -87,14 +87,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getByUserID(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         if (authorization(token)) {
-            try {
-                ResponseEntity<Object> user = userService.getUser(id);
-                logger.info("Get User", user);
-                return new ResponseEntity(user, HttpStatus.OK);
-
-            } catch (NoSuchElementException e) {
-                return new ResponseEntity("Not Exist", HttpStatus.NOT_FOUND);
-            }
+            return userService.getUser(id);
         } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
@@ -108,9 +101,8 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<Object> addUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
         if (authorization(token)) {
-            userService.saveUser(user);
-            logger.info("New User Added", user);
-            return new ResponseEntity(user, HttpStatus.OK);
+            logger.info("User add controller class", user);
+            return userService.saveUser(user);
         } else return new ResponseEntity(na, HttpStatus.OK);
     }
 
@@ -124,15 +116,10 @@ public class UserController {
     @PutMapping("/update/")
     public ResponseEntity<Object> updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
         if (authorization(token)) {
-            try {
-                userService.updateUser(user);
-                logger.info("Updated", user);
-                return new ResponseEntity("The update has been made in database", HttpStatus.OK);
-            } catch (NoSuchElementException e) {
-                return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
-            }
-        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
-
+            logger.info("Updated", user);
+            return userService.updateUser(user);
+        }
+        else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
 
 
@@ -182,4 +169,41 @@ public class UserController {
             }
         } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
     }
+
+    @PutMapping("/friend/{userId}")
+    public ResponseEntity<Object> friendrequest(@RequestHeader("Authorization") String token, @PathVariable(value = "userId") Long userId) {
+        if (authorization(token)) {
+            try {
+
+                logger.info("controller");
+                return userService.friendrequest(userId);
+            } catch (NoSuchElementException e) {
+                return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
+            }
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
+
+    }
+
+    @PutMapping("/email/{userId}")
+    public ResponseEntity<Object> email(@RequestHeader("Authorization") String token, @PathVariable(value = "userId") Long userId) {
+        if (authorization(token)) {
+            try {
+
+                logger.info("controller");
+                return userService.tokensendemailandsms(userId);
+            } catch (NoSuchElementException | MessagingException e) {
+                return new ResponseEntity("The ID given is not in database", HttpStatus.NOT_FOUND);
+            }
+        } else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
+    }
+    @PutMapping("/verify/{userId}")
+    public ResponseEntity<Object> verification(@RequestHeader("Authorization") String token,
+                                               @RequestHeader("smsToken") int smstoken,
+                                               @RequestHeader("emailToken") int emailtoken,
+                                               @RequestHeader("email") String email) {
+        if (authorization(token)) {
+            return userService.verificationsmsandemail(smstoken,emailtoken,email);
+        }else return new ResponseEntity(na, HttpStatus.UNAUTHORIZED);
+    }
+
 }

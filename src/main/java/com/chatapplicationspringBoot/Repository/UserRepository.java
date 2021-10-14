@@ -9,9 +9,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(@Param(value="email") String email);
+    User findByEmail(String email);
     User findByUserIdAndChat(long userId, long chatId);
 
     @Query(value = "SELECT *  from user where status = false", nativeQuery = true)
     public Iterable<User> findByStatus();
+
+    User findByUserIdAndEmailAndToken(String email,int token);
+
 }

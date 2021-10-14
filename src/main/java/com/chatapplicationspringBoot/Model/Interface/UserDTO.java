@@ -5,18 +5,21 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class DTOUser {
+public class UserDTO {
     private Long id;
     private int age;
     private String cnic;
     private String createdDate;
     private String email;
     private String password;
+    private String phoneNumber;
     private String updatedDate;
+    private boolean status;
     private String userName;
 
-    private List<DTOCategory> categories;
-    private List<DTOChat> chats;
+    private List<CategoryDTO> categories;
+    private List<ChatDTO> chats;
+    private List<RolesDTO> roles;
 
 
 }

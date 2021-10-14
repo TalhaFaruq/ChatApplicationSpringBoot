@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class DTOChatCategory {
+public class ChatCategoryDTO {
     private List<Chat> chatList;
     private List<Category> categoryList;
 }

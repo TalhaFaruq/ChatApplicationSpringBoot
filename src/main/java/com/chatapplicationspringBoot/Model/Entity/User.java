@@ -2,6 +2,8 @@ package com.chatapplicationspringBoot.Model.Entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
+import net.bytebuddy.asm.Advice;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +34,20 @@ public class User {
     @Column(nullable = false)
     private String password; //User Password
     @NotNull
-    private boolean Status;
+    private boolean deleteStatus = false;
+    private String phoneNumber;
     private String createdDate;
     private String updatedDate;
+    private int token;
+    private boolean accountStatus =false;
+
 
     /**
      * For one to many relationship with Chat  i.e. one user can create many chats (Unidirectional)
      */
-    @OneToMany(targetEntity = Chat.class,cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Chat.class,cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId")
-    private List<Chat> chat;
+    private List<Chat> chat = new ArrayList<>();
 
 
     @ManyToMany(cascade = CascadeType.MERGE, targetEntity = Category.class)
