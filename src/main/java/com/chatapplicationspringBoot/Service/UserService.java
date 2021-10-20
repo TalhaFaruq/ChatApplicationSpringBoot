@@ -7,8 +7,11 @@ import com.chatapplicationspringBoot.Model.Interface.ChatCategoryDTO;
 import com.chatapplicationspringBoot.Model.Interface.UserDTO;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
 import com.chatapplicationspringBoot.Repository.UserRepository;
+import com.chatapplicationspringBoot.Utilities.MailUtil;
+import com.chatapplicationspringBoot.Utilities.SmsUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,24 +35,23 @@ import java.util.Random;
 public class UserService {
 
     HttpHeaders httpHeaders = new HttpHeaders();
-    URI uri;
 
     /**
      * Not Autowired, Constructor is made
      */
     private final UserRepository userRepository;
     private final ChatRepository chatRepository;
-    private final MailService mailService;
-    private final SmsService smsService;
+    private final MailUtil mailUtil;
+    private final SmsUtil smsUtil;
 
     /**
      * Constructor
      */
-    public UserService(UserRepository userRepository, ChatRepository chatRepository, MailService mailService, SmsService smsService) {
+    public UserService(UserRepository userRepository, ChatRepository chatRepository, MailUtil mailUtil, SmsUtil smsUtil) {
         this.userRepository = userRepository;
         this.chatRepository = chatRepository;
-        this.mailService = mailService;
-        this.smsService = smsService;
+        this.mailUtil = mailUtil;
+        this.smsUtil = smsUtil;
     }
 
     /**
@@ -102,7 +104,7 @@ public class UserService {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception exception) {
             System.out.println(exception.getCause());
-         return new ResponseEntity<>(exception, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(exception, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -247,7 +249,7 @@ public class UserService {
             SMS sms = new SMS();
             sms.setTo(phoneNumber);
             sms.setMessage("Friend Request from " + name);
-            smsService.send(sms);
+            smsUtil.send(sms);
             return new ResponseEntity<>("Friend Request send", HttpStatus.OK);
         } else {
             ResponseEntity<UserDTO> dtoUser = getfawaduser(userId);
@@ -256,50 +258,65 @@ public class UserService {
             SMS sms = new SMS();
             sms.setTo(phone);
             sms.setMessage("Friend Request from" + username);
-            smsService.send(sms);
+            smsUtil.send(sms);
             return new ResponseEntity<>("Friend Request send", HttpStatus.OK);
         }
     }
 
+    /**
+     * Tokensendemailandsms response entity. It send the token to sms and email and set the verifystatus as false
+     * and save token in database
+     *
+     * @param userId the user id
+     * @return the response entity
+     * @throws MessagingException the messaging exception
+     * @author Talha Farooq
+     * @since 14 October 2021
+     */
     public ResponseEntity<Object> tokensendemailandsms(Long userId) throws MessagingException {
         Optional<User> user = userRepository.findById(userId);
         try {
             if (user.isPresent()) {
-                String email = user.get().getEmail();
-                String phoneNumber = user.get().getPhoneNumber() ;
-                String subject = "Verification";
                 Random rnd = new Random(); //Generating a random number
                 int token = rnd.nextInt(999999); //Generating a random number of 6 digits
-                String message = "Please verify yourself \n Email token: "+ token;
+                String message = "Please verify yourself \n Email token: " + token;
 
-                String name = user.get().getFirstName();
-                SMS sms = new SMS();
-                sms.setTo(phoneNumber);
-                sms.setMessage(name +" please verify yourself " + token);
+                SMS sms = new SMS(); //Sms class object getter and setter of number and message
+                sms.setTo(user.get().getPhoneNumber());
+                sms.setMessage(user.get().getFirstName() + " please verify yourself " + token);
+                smsUtil.send(sms);
+                logger.info("Message sent", sms);
+                mailUtil.sendMail(user.get().getEmail(), "Verification", message);
+                user.get().setToken(token); //Set the verify token as inactive
+                logger.info("Mail sent UserController");
 
-                smsService.send(sms);
-                mailService.sendMail(email,subject,message);
-                user.get().setToken(token);
-
-                return new ResponseEntity<>("Mail and message Sent",HttpStatus.OK);
-            }
-            else return new ResponseEntity<>("User is not found",HttpStatus.NOT_FOUND);
-        }catch (Exception e){
-            return new ResponseEntity<>(e,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Mail and message Sent", HttpStatus.OK);
+            } else return new ResponseEntity<>("User is not found", HttpStatus.NOT_FOUND);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(exception, HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<Object> verificationsmsandemail(int smstoken, int emailtoken, String email){
+    /**
+     * Verificationsmsandemail response entity. It checks the token from sms and email and verify from database
+     *
+     * @param smstoken   the smstoken
+     * @param emailtoken the emailtoken
+     * @param email      the email
+     * @return the response entity
+     */
+    public ResponseEntity<Object> verificationsmsandemail(int smstoken, int emailtoken, String email) {
         try {
-            if(emailtoken == smstoken){
-                User user = userRepository.findByUserIdAndEmailAndToken(email,emailtoken);
+            if (emailtoken == smstoken) { //Taking email and sms token and saving them differently will waste storage
+                //instead we check them in this if statement
+                User user = userRepository.findByEmailAndToken(email, emailtoken); //If the user present then user will get values otherwise user will be empty
                 user.setAccountStatus(true);
                 userRepository.save(user);
+                logger.info("User Active",user);
                 return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-            else return new ResponseEntity<>("Invalid Token",HttpStatus.UNAUTHORIZED);
-        }catch (Exception e){
-            return new ResponseEntity<>(e,HttpStatus.UNAUTHORIZED);
+            } else return new ResponseEntity<>("Invalid Token", HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.UNAUTHORIZED);
         }
 
     }

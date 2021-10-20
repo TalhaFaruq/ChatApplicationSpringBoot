@@ -2,6 +2,9 @@ package com.chatapplicationspringBoot.Model.Interface;
 
 import lombok.Data;
 
+/**
+ * The type Chat dto.
+ */
 @Data
 public class ChatDTO {
 

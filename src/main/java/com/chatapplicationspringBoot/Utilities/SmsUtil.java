@@ -1,24 +1,29 @@
-package com.chatapplicationspringBoot.Service;
+package com.chatapplicationspringBoot.Utilities;
 
 import com.chatapplicationspringBoot.Model.Entity.SMS;
 
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import com.twilio.Twilio;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 
+/**
+ * The type Sms service.
+ */
 @Service
-public class SmsService {
+public class SmsUtil {
     private String ACCOUNT_SID ="AC3fa3c0ff18fd3891dee5c43cc9b4d103";
 
     private String AUTH_TOKEN = "0f8aebd67673096e9dcb2dd5351d2b3c";
 
     private String FROM_NUMBER = "+12058594517";
 
+    /**
+     * Send.
+     *
+     * @param sms the sms
+     */
     public void send(SMS sms) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
@@ -28,6 +33,4 @@ public class SmsService {
 
     }
 
-    public void receive(MultiValueMap<String, String> smscallback) {
-    }
 }
